@@ -11,7 +11,7 @@ public class PacketC extends Check {
 
     public PacketC(final PlayerData data) { super(data); }
 
-    private EvictingList<BoltPacket> packetOrder = new EvictingList<>(3);
+    private EvictingList<BoltPacket> packetOrder = new EvictingList<>(2);
 
     public void handle(BoltPacket packet) {
         if (packet.isUseEntityAttack() || packet.isArmAnimation()) {

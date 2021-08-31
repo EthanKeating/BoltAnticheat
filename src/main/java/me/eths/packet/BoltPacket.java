@@ -4,9 +4,7 @@ import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.EnumWrappers;
-import com.sun.xml.internal.ws.api.message.Packet;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import me.eths.Bolt;
 import me.eths.player.PlayerData;
 

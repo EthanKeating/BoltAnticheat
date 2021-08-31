@@ -1,6 +1,5 @@
 package me.eths.player;
 
-import javafx.geometry.Pos;
 import lombok.Getter;
 import me.eths.player.processors.CheckProcessor;
 import me.eths.player.processors.PositionProcessor;
