@@ -1,0 +1,7 @@
+name: Bolt
+version: 1.0
+author: Eths
+main: me.eths.Bolt
+load: POSTWORLD
+depend:
+  - ProtocolLib
