@@ -21,13 +21,7 @@ public class TransactionProcessor {
     }
 
     public void handleOutgoing() {
-        PacketContainer packet = new PacketContainer(PacketType.Play.Server.TRANSACTION);
-        packet.getShorts().write(0, Bolt.serverTick);
-        try {
-            ProtocolLibrary.getProtocolManager().sendServerPacket(data.getPlayer(), packet);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
     }
 
 }
