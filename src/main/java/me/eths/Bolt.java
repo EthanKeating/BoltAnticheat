@@ -56,7 +56,7 @@ public class Bolt extends JavaPlugin {
         packet.getShorts().write(0, Bolt.serverTick);
         for (Player player : Bukkit.getOnlinePlayers()) {
             try {
-                ProtocolLibrary.getProtocolManager().sendServerPacket(player, packet);
+                getProtocolManager().sendServerPacket(player, packet);
             } catch (Exception e) {
                 e.printStackTrace();
             }

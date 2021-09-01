@@ -11,11 +11,12 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
+
 public class PlayerManager implements Listener {
 
     public static PlayerManager instance;
     public static ConcurrentHashMap<Player, PlayerData> dataManager;
-    public static ConcurrentHashMap<Player, Integer> playerIds;
+    public static ConcurrentHashMap<Integer, Player> playerIds;
 
     public PlayerManager() { onLoad(); }
 
@@ -52,7 +53,7 @@ public class PlayerManager implements Listener {
 
     public void injectPlayer(Player player) {
         dataManager.put(player, new PlayerData(player));
-        playerIds.put(player, player.getEntityId());
+        playerIds.put(player.getEntityId(), player);
     }
 
     public void ejectPlayer(Player player) {

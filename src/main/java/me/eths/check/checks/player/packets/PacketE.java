@@ -7,7 +7,7 @@ import me.eths.packet.BoltPacket;
 import me.eths.player.PlayerData;
 import org.bukkit.Bukkit;
 
-@CheckInfo(name = "Packet (E)", desc = "Checks if player sent USE_ENTITY INTERACT during block hit")
+@CheckInfo(name = "Packet (E)", desc = "Checks if player failed to sent USE_ENTITY INTERACT during block hit")
 public class PacketE extends Check {
 
     public PacketE(final PlayerData data) { super(data); }

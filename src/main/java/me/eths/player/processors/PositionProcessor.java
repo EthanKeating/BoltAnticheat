@@ -47,7 +47,7 @@ public final class PositionProcessor {
         deltaX = x - prevX;
         deltaY = y - prevY;
         deltaZ = z - prevZ;
-        deltaXZ = Math.sqrt(deltaX * deltaX + deltaZ * deltaZ);
+        deltaXZ = Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaZ, 2));
 
         prevAccelX = accelX;
         prevAccelY = accelY;

@@ -22,20 +22,12 @@ public class ClickerA extends Check {
         if (packet.isTransaction()) {
             delay++;
         } else if (packet.isArmAnimation()) {
-            if (!data.getActionProcessor().isDigging()) {
-                if (delay < 3) {
-                    delays.add(delay);
-                    if (delays.isFull()) {
-                        if (MathUtil.getAverage(delays) < 1.35) {
-                            boolean flag = true;
-                            for (Double delayLoop : delays) {
-                                if (delayLoop == 0) {
-                                    flag = false;
-                                }
-                            }
-                            if (flag) { flag(); }
-                        }
-                    }
+            if (!data.getActionProcessor().isDigging() && delay < 3) {
+                delays.add(delay);
+                if (delays.isFull() && MathUtil.getAverage(delays) < 1.35) {
+                    boolean flag = true;
+                    for (Double delayLoop : delays) { if (delayLoop == 0) { flag = false; } }
+                    if (flag) flag();
                 }
                 delay = 0;
             }
