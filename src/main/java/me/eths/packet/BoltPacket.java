@@ -47,6 +47,16 @@ public class BoltPacket {
                 event.getPacket().getEntityUseActions().read(0).equals(EnumWrappers.EntityUseAction.ATTACK);
     }
 
+    public boolean isUseEntityInteract() {
+        return type.equals(PacketType.Play.Client.USE_ENTITY) &&
+                event.getPacket().getEntityUseActions().read(0).equals(EnumWrappers.EntityUseAction.INTERACT);
+    }
+
+    public boolean isUseEntityInteractAt() {
+        return type.equals(PacketType.Play.Client.USE_ENTITY) &&
+                event.getPacket().getEntityUseActions().read(0).equals(EnumWrappers.EntityUseAction.INTERACT_AT);
+    }
+
     public boolean isPosition() {
         return type.equals(PacketType.Play.Client.POSITION_LOOK) ||
                 type.equals(PacketType.Play.Client.POSITION);

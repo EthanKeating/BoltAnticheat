@@ -15,17 +15,18 @@ public class PlayerManager implements Listener {
 
     public static PlayerManager instance;
     public static ConcurrentHashMap<Player, PlayerData> dataManager;
+    public static ConcurrentHashMap<Player, Integer> playerIds;
 
     public PlayerManager() { onLoad(); }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
-        dataManager.put(e.getPlayer(), new PlayerData(e.getPlayer()));
+        injectPlayer(e.getPlayer());
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent e) {
-        dataManager.remove(e.getPlayer());
+        ejectPlayer(e.getPlayer());
     }
 
     public PlayerData get(Player player) {
@@ -34,18 +35,29 @@ public class PlayerManager implements Listener {
 
     public void onLoad() {
         dataManager = new ConcurrentHashMap<>();
+        playerIds = new ConcurrentHashMap<>();
         instance = this;
         for (Player player : Bukkit.getOnlinePlayers()) {
-            dataManager.put(player, new PlayerData(player));
+            injectPlayer(player);
         }
     }
 
     public void onUnload() {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            dataManager.remove(player);
+            ejectPlayer(player);
         }
         dataManager = null;
         instance = null;
+    }
+
+    public void injectPlayer(Player player) {
+        dataManager.put(player, new PlayerData(player));
+        playerIds.put(player, player.getEntityId());
+    }
+
+    public void ejectPlayer(Player player) {
+        dataManager.remove(player);
+        playerIds.remove(player);
     }
 
 }

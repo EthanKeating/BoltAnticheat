@@ -16,6 +16,10 @@ public class RangeA extends Check {
         super(data);
     }
 
-    public void handle(BoltPacket packet) { }
+    public void handle(BoltPacket packet) {
+
+
+
+    }
 
 }

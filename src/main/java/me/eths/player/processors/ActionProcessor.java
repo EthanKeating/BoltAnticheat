@@ -33,7 +33,7 @@ public class ActionProcessor {
                     break;
             }
         }
-        else if (packet.isDig()) {
+        if (packet.isDig()) {
             switch(packet.getPacket().getPlayerDigTypes().read(0)) {
                 case START_DESTROY_BLOCK:
                     isDigging = true;
@@ -44,10 +44,10 @@ public class ActionProcessor {
                     break;
             }
         }
-        else if (packet.isPlace()) {
+        if (packet.isPlace()) {
             if (data.getPlayer().getItemInHand().toString().contains("SWORD")) { isBlocking = true; }
         }
-        else if (packet.isFlying()) {
+        if (packet.isFlying()) {
             if (isBlocking) { if (!data.getPlayer().getItemInHand().toString().contains("SWORD")) { isBlocking = false; }}
         }
     }
