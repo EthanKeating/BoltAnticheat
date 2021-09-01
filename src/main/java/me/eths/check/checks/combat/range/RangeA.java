@@ -38,7 +38,7 @@ public class RangeA extends Check {
                         distance = pLocations.get(pLocations.limit() - 2).distanceXZHitBox(vLocations.get(backTrack - i).getViewed(), (data.isLegacy()) ? 0.4 : 0.315);
                         if (distance < lowestReach) lowestReach = distance;
                     }
-                    if (lowestReach > 3.03) {
+                    if (lowestReach > 3.05) {
                         packet.getEvent().setCancelled(true);
                         flag();
                     }
