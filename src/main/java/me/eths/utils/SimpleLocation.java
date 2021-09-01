@@ -46,14 +46,14 @@ public class SimpleLocation {
         return Math.sqrt(distanceX + distanceY + distanceZ);
     }
 
+
     public double distanceXZHitBox(SimpleLocation location, double expansion) {
 
         double angle = Math.abs(Math.atan2(x - location.getX(), z - location.getZ()) * 180 / Math.PI);
-        while(angle > 90) { angle -= 90; }
+        while (angle > 90) { angle -= 90; }
 
         double side = expansion * Math.cos(angle);
-        return (distanceXZ(location) - Math.sqrt(Math.pow(expansion, 2) + Math.pow(side, 2))) + 0.03;
-
+        return Math.sqrt(Math.pow(expansion, 2) + Math.pow(side, 2));
     }
 
 }
