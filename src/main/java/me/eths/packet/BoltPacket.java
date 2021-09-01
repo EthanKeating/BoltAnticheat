@@ -26,10 +26,11 @@ public class BoltPacket {
 
     private void handle() {
         if (data != null) {
-            if (isPosition()) { data.getPositionProcessor().handle(event.getPacket()); }
             if (isLook()) { data.getRotationProcessor().handle(event.getPacket()); }
+            if (isPosition()) { data.getPositionProcessor().handle(event.getPacket()); }
             if (isTransaction()) { data.getTransactionProcessor().handleIncoming(event.getPacket()); }
-            if (isFlying()) { data.getTransactionProcessor().handleOutgoing(); }
+            if (isFlying()) { data.getTransactionProcessor().handleFlying(); }
+            data.getActionProcessor().handle(this);
             data.getCheckProcessor().handle(this);
         }
     }
@@ -46,14 +47,6 @@ public class BoltPacket {
                 event.getPacket().getEntityUseActions().read(0).equals(EnumWrappers.EntityUseAction.ATTACK);
     }
 
-    public boolean isUseEntity() {
-        return type.equals(PacketType.Play.Client.USE_ENTITY);
-    }
-
-    public boolean isArmAnimation() {
-        return type.equals(PacketType.Play.Client.ARM_ANIMATION);
-    }
-
     public boolean isPosition() {
         return type.equals(PacketType.Play.Client.POSITION_LOOK) ||
                 type.equals(PacketType.Play.Client.POSITION);
@@ -64,8 +57,23 @@ public class BoltPacket {
                 type.equals(PacketType.Play.Client.LOOK);
     }
 
+
+    public boolean isUseEntity() {
+        return type.equals(PacketType.Play.Client.USE_ENTITY);
+    }
+
+    public boolean isArmAnimation() {
+        return type.equals(PacketType.Play.Client.ARM_ANIMATION);
+    }
+
+    public boolean isDig() { return type.equals(PacketType.Play.Client.BLOCK_DIG); }
+
+    public boolean isPlace() { return type.equals(PacketType.Play.Client.BLOCK_DIG); }
+
     public boolean isTransaction() {
         return type.equals(PacketType.Play.Client.TRANSACTION);
     }
+
+    public boolean isEntityAction() { return type.equals(PacketType.Play.Client.ENTITY_ACTION); }
 
 }

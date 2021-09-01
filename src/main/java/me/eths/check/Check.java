@@ -14,8 +14,7 @@ public abstract class Check {
         this.data = data;
     }
 
-    public void handle(BoltPacket packet) {
-    }
+    public void handle(BoltPacket packet) { }
 
     public void flag() {
         String check = this.getCheckInfo().name();

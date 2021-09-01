@@ -4,7 +4,11 @@ import com.comphenix.protocol.events.PacketContainer;
 import lombok.Getter;
 import me.eths.packet.BoltPacket;
 import me.eths.player.PlayerData;
+import me.eths.utils.EvictingList;
+import me.eths.utils.SimpleLocation;
 import org.bukkit.Bukkit;
+
+import java.util.Vector;
 
 @Getter
 public final class PositionProcessor {

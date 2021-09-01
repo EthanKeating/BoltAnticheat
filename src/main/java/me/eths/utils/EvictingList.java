@@ -31,4 +31,6 @@ public class EvictingList<E> extends LinkedList<E> {
     public E getLastest() {
         return get(size() - 1);
     }
+
+    public boolean isFull() { return super.size() == limit; }
 }
