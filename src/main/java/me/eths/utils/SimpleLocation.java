@@ -52,7 +52,7 @@ public class SimpleLocation {
         while(angle > 90) { angle -= 90; }
 
         double side = expansion * Math.cos(angle);
-        return distanceXZ(location) - Math.sqrt(Math.pow(expansion, 2) + Math.pow(side, 2));
+        return (distanceXZ(location) - Math.sqrt(Math.pow(expansion, 2) + Math.pow(side, 2))) + 0.03;
 
     }
 
