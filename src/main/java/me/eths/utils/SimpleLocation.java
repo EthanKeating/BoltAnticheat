@@ -49,11 +49,13 @@ public class SimpleLocation {
 
     public double distanceXZHitBox(SimpleLocation location, double expansion) {
 
-        double angle = Math.abs(Math.atan2(x - location.getX(), z - location.getZ()) * 180 / Math.PI);
-        while (angle > 90) { angle -= 90; }
+        double angle = Math.abs(Math.toDegrees(Math.atan2(x - location.getX(), z - location.getZ())));
+        while (angle > 45) { angle -= 90; }
+        angle = Math.toRadians(Math.abs(angle));
 
-        double side = expansion * Math.cos(angle);
-        return Math.sqrt(Math.pow(expansion, 2) + Math.pow(side, 2));
+        double removal = expansion * Math.tan(angle);
+
+        return distanceXZ(location) - Math.sqrt(Math.pow(expansion, 2) + Math.pow(removal, 2)) + 0.03;
     }
 
 }

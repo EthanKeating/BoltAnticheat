@@ -30,21 +30,15 @@ public class RangeA extends Check {
                 if (vLocations.isFull()) {
                     double distance;
                     double lowestReach = 6;
-                    double highestHitbox = 0;
 
                     for (int i = 0; i < 3; ++i) {
-                        distance = pLocations.get(pLocations.limit() - 1).distanceXZ(vLocations.get(backTrack - i).getViewed());
-                        if (distance < lowestReach) lowestReach = distance;
                         distance = pLocations.get(pLocations.limit() - 1).distanceXZHitBox(vLocations.get(backTrack - i).getViewed(), (data.isLegacy()) ? 0.4 : 0.315);
-                        if (distance > highestHitbox) highestHitbox = distance;
-
-                        distance = pLocations.get(pLocations.limit() - 2).distanceXZ(vLocations.get(backTrack - i).getViewed());
                         if (distance < lowestReach) lowestReach = distance;
+
                         distance = pLocations.get(pLocations.limit() - 2).distanceXZHitBox(vLocations.get(backTrack - i).getViewed(), (data.isLegacy()) ? 0.4 : 0.315);
-                        if (distance > highestHitbox) highestHitbox = distance;
+                        if (distance < lowestReach) lowestReach = distance;
                     }
-                    //Bukkit.broadcastMessage("Reach: " + lowestReach);
-                    if (lowestReach - highestHitbox > 3.03) {
+                    if (lowestReach > 3.03) {
                         packet.getEvent().setCancelled(true);
                         flag();
                     }
