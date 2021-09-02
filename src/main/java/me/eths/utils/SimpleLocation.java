@@ -55,7 +55,7 @@ public class SimpleLocation {
 
         double removal = expansion * Math.tan(angle);
 
-        return distanceXZ(location) - Math.sqrt(Math.pow(expansion, 2) + Math.pow(removal, 2)) + 0.03;
+        return distanceXZ(location) - Math.sqrt(Math.pow(expansion, 2) + Math.pow(removal, 2)) + 0.05;
     }
 
 }
