@@ -26,41 +26,48 @@ public class RangeA extends Check {
             victim = PlayerManager.playerIds.get(packet.getPacket().getIntegers().read(0));
 
         }
-        if (packet.isTransaction() && victim != null) {
-            EvictingList<SimpleLocation> pLocations = data.getTransactionProcessor().getPrevLocations();
-            if (pLocations.isFull()) {
-                int backTrack = ((pLocations.limit() - 1) - data.getTransactionProcessor().getPlayerTicksBehind());
-                PlayerData vData = Bolt.instance.getPlayerManager().get(victim);
-                EvictingList<SimpleLocation> vLocations = vData.getTransactionProcessor().getPrevLocations();
-                if (vLocations.isFull()) {
-                    double distance;
-                    double lowestReach = 6;
-                    double highestHitbox = 0;
+        if (data.isLegacy()) {
+            if (packet.isFlying() && victim != null) {
+                runReach(packet, 3.05);
+            }
+        } else {
+            if(packet.isTransaction()) {
+                runReach(packet, 3.15);
+            }
+        }
+    }
+    private void runReach(BoltPacket packet, double max) {
+        EvictingList<SimpleLocation> pLocations = data.getTransactionProcessor().getPrevLocations();
+        if (pLocations.isFull()) {
+            int backTrack = ((pLocations.limit() - 1) - data.getTransactionProcessor().getPlayerTicksBehind());
+            PlayerData vData = Bolt.instance.getPlayerManager().get(victim);
+            EvictingList<SimpleLocation> vLocations = vData.getTransactionProcessor().getPrevLocations();
+            if (vLocations.isFull()) {
+                double distance;
+                double lowestReach = 6;
+                double highestHitbox = 0;
 
-                    for (int i = 0; i < 5; ++i) {
-                        distance = pLocations.getLastest().distanceXZ(vLocations.get(backTrack - i).getViewed());
-                        if (distance < lowestReach) lowestReach = distance;
+                for (int i = 0; i < 6; ++i) {
+                    distance = pLocations.getLastest().distanceXZ(vLocations.get(backTrack - i).getViewed());
+                    if (distance < lowestReach) lowestReach = distance;
 
-                        distance = pLocations.get(pLocations.limit() - 2).distanceXZ(vLocations.get(backTrack - i).getViewed());
-                        if (distance < lowestReach) lowestReach = distance;
+                    distance = pLocations.get(pLocations.limit() - 2).distanceXZ(vLocations.get(backTrack - i).getViewed());
+                    if (distance < lowestReach) lowestReach = distance;
 
 
-                        distance = pLocations.getLastest().distanceXZHitBox(vLocations.get(backTrack - i).getViewed(), (data.isLegacy()) ? 0.4 : 0.315);
-                        if (distance > highestHitbox) highestHitbox = distance;
+                    distance = pLocations.getLastest().distanceXZHitBox(vLocations.get(backTrack - i).getViewed(), (data.isLegacy()) ? 0.4 : 0.315);
+                    if (distance > highestHitbox) highestHitbox = distance;
 
-                        distance = pLocations.get(pLocations.limit() - 2).distanceXZHitBox(vLocations.get(backTrack - i).getViewed(), (data.isLegacy()) ? 0.4 : 0.315);
-                        if (distance > highestHitbox) highestHitbox = distance;
+                    distance = pLocations.get(pLocations.limit() - 2).distanceXZHitBox(vLocations.get(backTrack - i).getViewed(), (data.isLegacy()) ? 0.4 : 0.315);
+                    if (distance > highestHitbox) highestHitbox = distance;
 
-                    }
-                    victim = null;
-                    Bukkit.broadcastMessage(lowestReach - highestHitbox + "");
-                    if (lowestReach - highestHitbox > 3.01) {
-                        packet.getEvent().setCancelled(true);flag();
-                    }
+                }
+                victim = null;
+                if (lowestReach - highestHitbox > max) {
+                    packet.getEvent().setCancelled(true);
+                    flag();
                 }
             }
         }
-
     }
-
 }
