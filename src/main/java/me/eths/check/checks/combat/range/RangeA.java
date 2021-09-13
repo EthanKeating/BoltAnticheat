@@ -28,11 +28,11 @@ public class RangeA extends Check {
         }
         if (data.isLegacy()) {
             if (packet.isFlying() && victim != null) {
-                runReach(packet, 3.05);
+                //runReach(packet, 3.05);
             }
         } else {
             if(packet.isTransaction()) {
-                runReach(packet, 3.15);
+                //runReach(packet, 3.15);
             }
         }
     }

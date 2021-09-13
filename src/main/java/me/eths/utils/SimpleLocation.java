@@ -3,6 +3,7 @@ package me.eths.utils;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
+import org.bukkit.util.Vector;
 
 @Getter @Setter
 public class SimpleLocation {
@@ -33,6 +34,17 @@ public class SimpleLocation {
         return location;
     }
 
+    public Vector direction() {
+        Vector vector = new Vector();
+        float rotX = (float) Math.toRadians(yaw);
+        float rotY = (float) Math.toRadians(pitch);
+        vector.setY(-Math.sin(rotY));
+        double xz = Math.cos(rotY);
+        vector.setX(-xz * Math.sin(rotX));
+        vector.setZ(xz * Math.cos(rotX));
+        return vector;
+    }
+
     public double distanceXZ(SimpleLocation location) {
         double distanceX = this.x - location.getX();
         double distanceZ = this.z - location.getZ();
@@ -46,6 +58,9 @@ public class SimpleLocation {
         return Math.sqrt(distanceX + distanceY + distanceZ);
     }
 
+    public SimpleLocation clone() {
+        return new SimpleLocation(x, y, z , yaw, pitch);
+    }
 
     public double distanceXZHitBox(SimpleLocation location, double expansion) {
 
@@ -56,6 +71,11 @@ public class SimpleLocation {
         double removal = expansion * Math.tan(angle);
 
         return (Math.sqrt(Math.pow(expansion, 2) + Math.pow(removal, 2)) + 0.03);
+    }
+
+    @Override
+    public String toString() {
+        return "x: " + x + ", y: " + y + ", z: " + z + ", yaw: " + yaw + ", pitch: " + pitch;
     }
 
 }

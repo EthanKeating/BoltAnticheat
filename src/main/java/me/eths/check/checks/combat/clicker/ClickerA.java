@@ -23,7 +23,6 @@ public class ClickerA extends Check {
             delay++;
         } else if (packet.isArmAnimation()) {
             if (!data.getActionProcessor().isDigging() && delay < 3) {
-            //if (delay < 3) {
                 delays.add(delay);
                 if (delays.isFull() && MathUtil.getAverage(delays) < 1.35) {
                     boolean flag = true;
@@ -33,7 +32,6 @@ public class ClickerA extends Check {
             }
             delay = 0;
         }
-
     }
 
 }
