@@ -2,6 +2,7 @@ package me.eths.utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.util.Vector;
+import sun.java2d.pipe.SpanShapeRenderer;
 
 public class HitBox {
 
@@ -23,16 +24,18 @@ public class HitBox {
         corner2.setZ(center.getZ() + radius);
     }
 
+    //*
+    // Checks if a SimpleLocation's eye raycast is colliding with HitBox
+    //*
     public boolean rayCast(SimpleLocation locFrom) {
         Vector vec = locFrom.direction().normalize();
 
         locFrom = locFrom.clone();
+        locFrom.setY(locFrom.getY() + 1.62);
 
         double x = vec.getX() / 100;
         double y = vec.getY() / 100;
         double z = vec.getZ() / 100;
-
-
 
         for (int i = 0; i < 300; i++) {
             locFrom.setX(locFrom.getX() + x);
@@ -45,6 +48,9 @@ public class HitBox {
         return false;
     }
 
+    //*
+    // Checks if a SimpleLocation is colliding with another SimpleLocation
+    //*
     public boolean collides(SimpleLocation locFrom) {
         if (locFrom.getX() > corner1.getX()) {
             if (locFrom.getX() < corner2.getX()) {
