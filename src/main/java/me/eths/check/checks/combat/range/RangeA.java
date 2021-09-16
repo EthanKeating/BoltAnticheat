@@ -23,7 +23,7 @@ public class RangeA extends Check {
     public void handle(BoltPacket packet) {
 
         if (packet.isUseEntityAttack()) {
-            victim = PlayerManager.playerIds.get(packet.getPacket().getIntegers().read(0));
+            victim = Bolt.instance.getPlayerManager().playerIds.get(packet.getPacket().getIntegers().read(0));
 
         }
         if (data.isLegacy()) {

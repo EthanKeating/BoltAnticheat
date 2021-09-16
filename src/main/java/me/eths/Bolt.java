@@ -27,8 +27,8 @@ public class Bolt extends JavaPlugin {
         instance = this;
         protocolManager = ProtocolLibrary.getProtocolManager();
         packetListener = new PacketListener(protocolManager);
-        getServer().getPluginManager().registerEvents(new PlayerManager(), this);
-        playerManager = playerManager.instance;
+        playerManager = new PlayerManager();
+        getServer().getPluginManager().registerEvents(playerManager, this);
         startTickManager();
     }
 

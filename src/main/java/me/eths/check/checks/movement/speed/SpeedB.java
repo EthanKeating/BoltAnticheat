@@ -34,7 +34,7 @@ public class SpeedB extends Check {
             } else if (!currentGround && !prevGround) {
                 limit += 0.12;
                 limit *= Math.pow(0.98, airTicks - 2);
-                limit = Math.max(originalLimit, limit);
+                limit = Math.max(originalLimit + 0.02, limit);
             } else {
                 limit += 0.12;
                 if (groundTicks == 1) {

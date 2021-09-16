@@ -14,9 +14,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class PlayerManager implements Listener {
 
-    public static PlayerManager instance;
-    public static ConcurrentHashMap<Player, PlayerData> dataManager;
-    public static ConcurrentHashMap<Integer, Player> playerIds;
+    public ConcurrentHashMap<Player, PlayerData> dataManager;
+    public ConcurrentHashMap<Integer, Player> playerIds;
 
     public PlayerManager() { onLoad(); }
 
@@ -37,7 +36,6 @@ public class PlayerManager implements Listener {
     public void onLoad() {
         dataManager = new ConcurrentHashMap<>();
         playerIds = new ConcurrentHashMap<>();
-        instance = this;
         for (Player player : Bukkit.getOnlinePlayers()) {
             injectPlayer(player);
         }
@@ -48,7 +46,6 @@ public class PlayerManager implements Listener {
             ejectPlayer(player);
         }
         dataManager = null;
-        instance = null;
     }
 
     public void injectPlayer(Player player) {

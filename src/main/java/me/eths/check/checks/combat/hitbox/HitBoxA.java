@@ -31,7 +31,7 @@ public class HitBoxA extends Check {
 
     public void handle(BoltPacket packet) {
         if (packet.isUseEntityAttack()) {
-            victim = PlayerManager.playerIds.get(packet.getPacket().getIntegers().read(0));
+            victim = Bolt.instance.getPlayerManager().playerIds.get(packet.getPacket().getIntegers().read(0));
             int size = Bolt.instance.getPlayerManager().get(victim).getTransactionProcessor().getPrevLocations().size() - 1;
             int backtrack = size - data.getTransactionProcessor().getPlayerTicksBehind();
             int loop = 0;
