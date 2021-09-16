@@ -73,8 +73,8 @@ public class HitBoxA extends Check {
             }
         }
 
-        prevLocations = interLoc1.interpolateTracker(interLoc2, 5);
-        for (SimpleLocation loc : interLoc2.interpolateTracker(interLoc3, 5)) {
+        prevLocations = interLoc1.interpolateTracker(interLoc2, 20);
+        for (SimpleLocation loc : interLoc2.interpolateTracker(interLoc3, 20)) {
             prevLocations.add(loc);
         }
 
