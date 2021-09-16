@@ -15,6 +15,8 @@ public class PacketA extends Check {
 
     private EvictingList<BoltPacket> packetOrder = new EvictingList<>(3);
 
+    double threshold;
+
     public void handle(BoltPacket packet) {
         if (packet.isFlying() || packet.isUseEntityAttack() || packet.isTransaction()) {
             packetOrder.add(packet);
@@ -26,7 +28,10 @@ public class PacketA extends Check {
                         packetOrder.get(0).isFlying();
 
                 if (flag) {
-                    flag();
+                    threshold = Math.max(3, threshold + 1);
+                    if (threshold > 3) flag();
+                } else {
+                    threshold = Math.max(0, threshold - 0.05);
                 }
             }
 
