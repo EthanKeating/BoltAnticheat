@@ -14,6 +14,15 @@ public class SimpleLocation {
 
     private double x, y, z;
     private float yaw, pitch;
+    private short id;
+
+    public SimpleLocation(double x, double y, double z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.yaw = 0;
+        this.pitch = 0;
+    }
 
     public SimpleLocation(double x, double y, double z, float yaw, float pitch) {
         this.x = x;
@@ -21,6 +30,15 @@ public class SimpleLocation {
         this.z = z;
         this.yaw = yaw;
         this.pitch = pitch;
+    }
+
+    public SimpleLocation(double x, double y, double z, float yaw, float pitch, short id) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.yaw = yaw;
+        this.pitch = pitch;
+        this.id = id;
     }
 
     public SimpleLocation getViewed() {
@@ -55,6 +73,13 @@ public class SimpleLocation {
         return Math.sqrt(distanceX * distanceX + distanceZ * distanceZ);
     }
 
+    public double distance(SimpleLocation location) {
+        double distanceX = this.x - location.getX();
+        double distanceY = this.y - location.getY();
+        double distanceZ = this.z - location.getZ();
+        return Math.sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
+    }
+
     public double distanceTo(SimpleLocation location) {
         double distanceX = Math.pow(this.x - location.getX(), 2);
         double distanceY = Math.pow(this.y - location.getY(), 2);
@@ -66,35 +91,28 @@ public class SimpleLocation {
         return new SimpleLocation(x, y, z , yaw, pitch);
     }
 
-    public Set<SimpleLocation> interpolateTracker(SimpleLocation otherLocation, int interpolatedSamples) {
+    public Set<SimpleLocation> interpolateTracker(SimpleLocation otherLocation, int samples) {
 
-        Set<SimpleLocation> locations = new HashSet<>();
+        Set<SimpleLocation> locationSamples = new HashSet<>();
 
-        double startX = x;
-        double startY = y;
-        double startZ = z;
+        double deltaX = (otherLocation.x - x) / samples;
 
-        double endX = otherLocation.getX();
-        double endY = otherLocation.getY();
-        double endZ = otherLocation.getZ();
+        double bruteX = otherLocation.x - deltaX;
+        double bruteY;
+        double bruteZ;
 
-        double deltaX = startX - endX;
-        double deltaY = startY - endY;
-        double deltaZ = startZ - endZ;
+        for (int i = 0; i <= samples; i++) {
 
-        double additionX = deltaX / interpolatedSamples;
-        double additionY = deltaY / interpolatedSamples;
-        double additionZ = deltaZ / interpolatedSamples;
+            bruteY = (((otherLocation.y - y) * (bruteX - x)) / (bruteX - x)) + y;
+            bruteZ = (((otherLocation.z - z) * (bruteX - x)) / (bruteX - x)) + z;
 
-        for (int i = 0; i < interpolatedSamples; i++) {
-            startX += additionX;
-            startY += additionY;
-            startZ += additionZ;
-            locations.add(new SimpleLocation(startX, startY, startZ, 0, 0));
+            locationSamples.add(new SimpleLocation(bruteX, bruteY, bruteZ, 0, 0));
+
+            bruteX -= deltaX;
+
+
         }
-
-        return locations;
-
+        return  locationSamples;
     }
 
     public double distanceXZHitBox(SimpleLocation location, double expansion) {

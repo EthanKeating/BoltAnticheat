@@ -6,12 +6,14 @@ import sun.java2d.pipe.SpanShapeRenderer;
 
 public class HitBox {
 
-    private SimpleLocation corner1, corner2;
+    private SimpleLocation corner1, corner2, center;
 
     //*
     // Creates a dummy HitBox using specified dimensions radius & height
     //*
     public HitBox(SimpleLocation center, double radius, double height) {
+
+        this.center = center;
 
         corner1 = center.clone();
         corner2 = center.clone();
@@ -27,25 +29,23 @@ public class HitBox {
     //*
     // Checks if a SimpleLocation's eye raycast is colliding with HitBox
     //*
-    public boolean rayCast(SimpleLocation locFrom) {
-        Vector vec = locFrom.direction().normalize();
-
+    public double rayCast(SimpleLocation locFrom) {
         locFrom = locFrom.clone();
         locFrom.setY(locFrom.getY() + 1.62);
 
-        double x = vec.getX() / 100;
-        double y = vec.getY() / 100;
-        double z = vec.getZ() / 100;
 
-        for (int i = 0; i < 300; i++) {
-            locFrom.setX(locFrom.getX() + x);
-            locFrom.setY(locFrom.getY() + y);
-            locFrom.setZ(locFrom.getZ() + z);
-            if (collides(locFrom)) {
-                return true;
+        SimpleLocation endLoc = locFrom.clone();
+        Vector vec = locFrom.direction().multiply(0);
+
+        for (int i = 0; i <= 6000; i++) {
+            vec = locFrom.direction().multiply(((double) i) / 1000);
+            endLoc = new SimpleLocation(locFrom.getX() + vec.getX(),locFrom.getY() + vec.getY(),locFrom.getZ() + vec.getZ());
+            if (collides(endLoc)) {
+                return ((double) i) / 1000;
             }
         }
-        return false;
+
+        return 600;
     }
 
     //*

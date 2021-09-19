@@ -62,7 +62,7 @@ public final class PositionProcessor {
         prevMathGround = mathGround;
         prevGround = ground;
 
-        mathGround = y % (1 / 64) == 0;
+        mathGround = y % 0.015625 == 0;
         ground = packet.getBooleans().read(0);
 
         if (ground) { groundTicks++; airTicks = 0; }

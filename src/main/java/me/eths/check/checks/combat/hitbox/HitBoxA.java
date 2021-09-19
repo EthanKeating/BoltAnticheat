@@ -25,70 +25,96 @@ public class HitBoxA extends Check {
         }
 
     Player victim;
-    HitBox box;
-    boolean flag;
+    PlayerData victimData;
     Set<SimpleLocation> prevLocations;
 
     public void handle(BoltPacket packet) {
         if (packet.isUseEntityAttack()) {
             victim = Bolt.instance.getPlayerManager().playerIds.get(packet.getPacket().getIntegers().read(0));
-            int size = Bolt.instance.getPlayerManager().get(victim).getTransactionProcessor().getPrevLocations().size() - 1;
-            int backtrack = size - data.getTransactionProcessor().getPlayerTicksBehind();
-            int loop = 0;
-            prevLocations = new HashSet<>();
-            for (SimpleLocation loc : Bolt.instance.getPlayerManager().get(victim).getTransactionProcessor().getPrevLocations()) {
-                if (loop > backtrack - 7) {
-                    if (loop < backtrack - 3) {
-                        prevLocations.add(loc.getViewed());
-                    }
+            victimData = Bolt.instance.getPlayerManager().get(victim);
+        }
+        if (packet.isFlying() && victim != null) {
+            SimpleLocation l1 = null;
+            SimpleLocation l2 = null;
+            SimpleLocation l3 = null;
+            SimpleLocation l4 = null;
+
+
+            for (SimpleLocation loopLoc : victimData.getTransactionProcessor().getPrevLocations()) {
+                if (loopLoc.getId() == data.getTransactionProcessor().getPlayerTick() - 6) {
+                    l1 = loopLoc.getViewed();
+                } else if (loopLoc.getId() == data.getTransactionProcessor().getPlayerTick() - 5) {
+                    l2 = loopLoc.getViewed();
+                } else if (loopLoc.getId() == data.getTransactionProcessor().getPlayerTick() - 4) {
+                    l3 = loopLoc.getViewed();
+                } else if (loopLoc.getId() == data.getTransactionProcessor().getPlayerTick() - 3) {
+                    l4 = loopLoc.getViewed();
                 }
-                loop++;
             }
-        } else if (packet.isFlying()) {
-            if (victim != null) {
-                runCheck();
-                victim = null;
+
+
+            if (l2 != null && l3 != null && l4 != null) {
+
+                prevLocations = new HashSet<>();
+
+                prevLocations.add(l2);
+                prevLocations.add(l3);
+                prevLocations.add(l4);
+
+                prevLocations.addAll(l2.interpolateTracker(l3, 20));
+                prevLocations.addAll(l3.interpolateTracker(l4, 20));
+
+                HitBox vBox;
+                double reach = 6;
+
+                SimpleLocation pLoc1 = data.getTransactionProcessor().getPrevLocations().get(data.getTransactionProcessor().getPrevLocations().size() - 2).clone();
+                SimpleLocation pLoc2 = data.getTransactionProcessor().getPrevLocations().get(data.getTransactionProcessor().getPrevLocations().size() - 2).clone();
+
+                pLoc2.setYaw(data.getTransactionProcessor().getPrevLocations().getLastest().getYaw());
+
+                SimpleLocation pLoc3 = pLoc1.clone();
+                SimpleLocation pLoc4 = pLoc2.clone();
+
+                pLoc1.setY(pLoc1.getY() + 1.62);
+                pLoc2.setY(pLoc2.getY() + 1.62);
+
+                pLoc3.setY(pLoc3.getY() + 1.54);
+                pLoc4.setY(pLoc4.getY() + 1.54);
+
+
+                for (SimpleLocation loopLoc : prevLocations) {
+
+                    vBox = new HitBox(loopLoc, 0.401, 1.8);
+
+                    double tempReach;
+
+                    tempReach = vBox.rayCast(pLoc1);
+                    if (reach > tempReach) {
+                        reach = tempReach;
+                    }
+
+                    tempReach = vBox.rayCast(pLoc2);
+                    if (reach > tempReach) {
+                        reach = tempReach;
+                    }
+
+                    tempReach = vBox.rayCast(pLoc3);
+                    if (reach > tempReach) {
+                        reach = tempReach;
+                    }
+
+                    tempReach = vBox.rayCast(pLoc4);
+                    if (reach > tempReach) {
+                        reach = tempReach;
+                    }
+
+                }
+                Bukkit.broadcastMessage(reach + "");
+                if (reach > 3.1) { flag(); }
             }
-        }
-    }
+            victim = null;
+            victimData = null;
 
-    private void runCheck() {
-        flag = true;
-        SimpleLocation pLoc1 = data.getTransactionProcessor().getPrevLocations().get(data.getTransactionProcessor().getPrevLocations().size() - 2).clone();
-        SimpleLocation pLoc2 = pLoc1.clone();
-        //SimpleLocation pLoc3 = data.getTransactionProcessor().getPrevLocations().getLastest().clone();
-        pLoc2.setYaw(data.getTransactionProcessor().getPrevLocations().getLastest().getYaw());
-
-        SimpleLocation interLoc1 = null;
-        SimpleLocation interLoc2 = null;
-        SimpleLocation interLoc3 = null;
-
-        for (SimpleLocation loc : prevLocations) {
-            if (interLoc1 == null) {
-                interLoc1 = loc.clone();
-            } else if (interLoc2 == null) {
-                interLoc2 = loc.clone();
-            } else {
-                interLoc3 = loc.clone();
-            }
-        }
-
-        prevLocations = interLoc1.interpolateTracker(interLoc2, 20);
-        for (SimpleLocation loc : interLoc2.interpolateTracker(interLoc3, 20)) {
-            prevLocations.add(loc);
-        }
-
-        for (SimpleLocation loc : prevLocations) {
-            loc.setY(loc.getY());
-            box = new HitBox(loc.getViewed(), 0.405, 1.8);
-            if (box.rayCast(pLoc1)) {
-                flag = false;
-            } else if (box.rayCast(pLoc2)) {
-                flag = false;
-            }
-        }
-        if (flag) {
-            flag();
         }
     }
 }

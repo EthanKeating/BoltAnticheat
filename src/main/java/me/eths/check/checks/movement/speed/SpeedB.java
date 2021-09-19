@@ -42,7 +42,7 @@ public class SpeedB extends Check {
                 } else if (groundTicks == 2) {
                     limit += 0.16;
                 } else {
-                    limit = Math.max(originalLimit + 0.02, (0.36 * Math.pow(0.95, groundTicks - 2)) + 0.02);
+                    limit = Math.max(originalLimit + 0.05, (0.36 * Math.pow(0.95, groundTicks - 2)) + 0.04);
                 }
             }
 
