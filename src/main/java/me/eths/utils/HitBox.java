@@ -49,7 +49,7 @@ public class HitBox {
     }
 
     //*
-    // Checks if a SimpleLocation is colliding with another SimpleLocation
+    // Checks if a SimpleLocation is colliding with the Hitbox
     //*
     public boolean collides(SimpleLocation locFrom) {
         if (locFrom.getX() > corner1.getX()) {
