@@ -29,10 +29,9 @@ public class ClickerA extends Check {
                     for (Double delayLoop : delays) { if (delayLoop == 0) { flag = false; } }
                     if (flag) flag();
                 }
-                delay = 0;
             }
+            delay = 0;
         }
-
     }
 
 }

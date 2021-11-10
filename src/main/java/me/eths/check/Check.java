@@ -19,7 +19,7 @@ public abstract class Check {
     public void flag() {
         String check = this.getCheckInfo().name();
         String alert = "&6[⚡] &f" + data.getPlayer().getName() + " &7violated &f" + check + " &e(x1)";
-        Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', alert));
+        //Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', alert));
     }
 
     public final CheckInfo getCheckInfo() {

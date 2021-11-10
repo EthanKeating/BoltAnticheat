@@ -3,6 +3,8 @@ package me.eths.player.processors;
 import com.comphenix.protocol.events.PacketContainer;
 import lombok.Getter;
 import me.eths.player.PlayerData;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 
 @Getter
 public final class RotationProcessor {
@@ -15,6 +17,8 @@ public final class RotationProcessor {
     prevDeltaYaw, prevDeltaPitch,
     accelYaw, accelPitch,
     prevAccelYaw, prevAccelPitch;
+
+    int sensitivity;
 
     public RotationProcessor(final PlayerData data) { this.data = data; }
 
@@ -37,6 +41,7 @@ public final class RotationProcessor {
 
         accelYaw = deltaYaw - prevDeltaYaw;
         accelPitch = deltaPitch - prevDeltaPitch;
+
 
     }
 

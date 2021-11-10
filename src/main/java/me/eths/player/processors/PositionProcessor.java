@@ -2,13 +2,7 @@ package me.eths.player.processors;
 
 import com.comphenix.protocol.events.PacketContainer;
 import lombok.Getter;
-import me.eths.packet.BoltPacket;
 import me.eths.player.PlayerData;
-import me.eths.utils.EvictingList;
-import me.eths.utils.SimpleLocation;
-import org.bukkit.Bukkit;
-
-import java.util.Vector;
 
 @Getter
 public final class PositionProcessor {
@@ -18,16 +12,18 @@ public final class PositionProcessor {
     private double x, y, z, prevX, prevY, prevZ,
 
     deltaX, deltaY, deltaZ, deltaXZ,
-    prevDeltaX, prevDeltaY, prevDeltaZ, prevDeltaXZ,
+            prevDeltaX, prevDeltaY, prevDeltaZ, prevDeltaXZ,
 
     accelX, accelY, accelZ, accelXZ,
-    prevAccelX, prevAccelY, prevAccelZ, prevAccelXZ;
+            prevAccelX, prevAccelY, prevAccelZ, prevAccelXZ;
 
     private boolean ground, prevGround, mathGround, prevMathGround;
 
     private int groundTicks, airTicks;
 
-    public PositionProcessor(final PlayerData data) { this.data = data; }
+    public PositionProcessor(final PlayerData data) {
+        this.data = data;
+    }
 
     public void handle(PacketContainer packet) {
 
@@ -45,7 +41,9 @@ public final class PositionProcessor {
         prevDeltaXZ = deltaXZ;
 
         deltaX = x - prevX;
-        deltaY = y - prevY;
+        if ((y - prevY) != -0.1040803780930446) {
+            deltaY = y - prevY;
+        } else deltaY = 0.0D;
         deltaZ = z - prevZ;
         deltaXZ = Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaZ, 2));
 
@@ -62,11 +60,16 @@ public final class PositionProcessor {
         prevMathGround = mathGround;
         prevGround = ground;
 
-        mathGround = y % (1 / 64) == 0;
+        mathGround = y % 0.015625 == 0;
         ground = packet.getBooleans().read(0);
 
-        if (ground) { groundTicks++; airTicks = 0; }
-        else{ airTicks++; groundTicks = 0;}
+        if (ground) {
+            groundTicks++;
+            airTicks = 0;
+        } else {
+            airTicks++;
+            groundTicks = 0;
+        }
     }
 
 }

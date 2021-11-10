@@ -7,9 +7,15 @@ import me.eths.packet.BoltPacket;
 import me.eths.player.PlayerData;
 import me.eths.player.PlayerManager;
 import me.eths.utils.EvictingList;
+import me.eths.utils.HitBox;
 import me.eths.utils.SimpleLocation;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @CheckInfo(name = "Range (A)", desc = "Checks if player is hitting out of range")
 public class RangeA extends Check {
@@ -18,34 +24,10 @@ public class RangeA extends Check {
         super(data);
     }
 
-    public void handle(BoltPacket packet) {
+    Player victim;
+    PlayerData victimData;
 
-        if (packet.isUseEntityAttack()) {
-            Player victim = PlayerManager.playerIds.get(packet.getPacket().getIntegers().read(0));
-            EvictingList<SimpleLocation> pLocations = data.getTransactionProcessor().getPrevLocations();
-            if (victim != null && pLocations.isFull()) {
-                int backTrack = ((pLocations.limit() - 2) - data.getTransactionProcessor().getPlayerTicksBehind());
-                PlayerData vData = Bolt.instance.getPlayerManager().get(victim);
-                EvictingList<SimpleLocation> vLocations = vData.getTransactionProcessor().getPrevLocations();
-                if (vLocations.isFull()) {
-                    double distance;
-                    double lowestReach = 6;
-
-                    for (int i = 0; i < 7; ++i) {
-                        distance = pLocations.get(pLocations.limit() - 1).distanceXZHitBox(vLocations.get(backTrack - i), (data.isLegacy()) ? 0.4 : 0.315);
-                        if (distance < lowestReach) lowestReach = distance;
-
-                        distance = pLocations.get(pLocations.limit() - 2).distanceXZHitBox(vLocations.get(backTrack - i), (data.isLegacy()) ? 0.4 : 0.315);
-                        if (distance < lowestReach) lowestReach = distance;
-                    }
-                    if (lowestReach > 3.03) {
-                        packet.getEvent().setCancelled(true);flag();
-                    }
-                }
-            }
-
-        }
-
+    public void handle2(BoltPacket packet) {
     }
 
 }
